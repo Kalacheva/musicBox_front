@@ -1,0 +1,14 @@
+<mat-list role="list">
+  <mat-list-item *ngFor="let song of data.songs">
+    {{song.nameSong}}
+    <span class ="spacer"></span>
+    <mat-icon *ngIf="data.isEditMode" (click)="deleteSong(song.idSong)">delete</mat-icon>
+  </mat-list-item>
+  <mat-list-item *ngIf="data.isEditMode">
+    <mat-form-field>
+      <mat-label>New song...</mat-label>
+      <input matInput #itemValue placeholder="Example">
+    </mat-form-field>
+    <button mat-button (click)="saveSong(itemValue.value)">Save</button>
+  </mat-list-item>
+</mat-list>

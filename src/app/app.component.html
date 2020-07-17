@@ -1,2 +1,51 @@
-<app-toolbar></app-toolbar>
-<app-sidenav></app-sidenav>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>MusicBox</span>
+    <span class ="spacer"></span>
+    <mat-slide-toggle [(ngModel)]="isEditMode" class="marginright10pixel">Edit Mode</mat-slide-toggle>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-tab-group animationDuration="0ms" (selectedTabChange)="getArtists($event.index+1)" >
+  <mat-tab *ngFor="let genre of genres" label="{{genre.nameGenre}}">
+      <mat-sidenav-container class="h600px">
+        <mat-sidenav mode="side" opened>
+          <mat-action-list role="navigation">
+            <mat-list-item *ngFor="let artist of artists">
+              <span  (click)="getAlbums(artist.idArtist)">
+                {{artist.nameArtist}}
+              </span>
+              <span class ="spacer"></span>
+              <mat-icon *ngIf="isEditMode" (click)="deleteArtist(artist.idArtist)">delete</mat-icon>
+            </mat-list-item>
+            <mat-list-item *ngIf="isEditMode">
+              <mat-form-field>
+                <mat-label>New artist...</mat-label>
+                <input matInput #itemValue placeholder="Example">
+              </mat-form-field>
+              <button mat-button (click)="saveArtist(itemValue.value)">Save</button>
+            </mat-list-item>
+          </mat-action-list>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <mat-grid-list cols="3">
+            <mat-grid-tile *ngFor="let album of albums">
+              <mat-card class="example-card">
+                <img  mat-card-image src="../assets/images/default-album.jpg" (click)="openDialog(album.idAlbum)">
+                <mat-card-title>{{album.nameAlbum}}</mat-card-title>
+                <mat-icon *ngIf="isEditMode" (click)="deleteAlbum(album.idAlbum)">delete</mat-icon>
+              </mat-card>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="isEditMode">
+              <mat-card class="example-card">
+                <mat-form-field>
+                  <mat-label>New album...</mat-label>
+                  <input matInput #itemValue placeholder="Example">
+                </mat-form-field>
+                <button mat-button (click)="saveAlbum(itemValue.value)">Save</button>
+              </mat-card>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+  </mat-tab>
+</mat-tab-group>
